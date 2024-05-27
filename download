@@ -16,9 +16,10 @@ apk_path=""
 failed=0
 package_deep_link="https://play.google.com/store/apps/details?id=$package"
 echo "[$(date +%FT%T)] - Package deeplink: $package_deep_link"
+pkg install android-tools
 adb shell am start -a android.intent.action.VIEW -d "$package_deep_link"
-adb pull $(adb shell uiautomator dump | grep -oP '[^ ]+.xml') /tmp/view.xml
-coords=$(perl -ne 'printf "%d %d\n", ($1+$3)/2, ($2+$4)/2 if /text="Install"[^>]*bounds="\[(\d+),(\d+)\]\[(\d+),(\d+)\]"/' /tmp/view.xml)
+adb pull $(adb shell uiautomator dump | grep -oP '[^ ]+.xml') storage/shared/Downloads/tmp/view.xml
+coords=$(perl -ne 'printf "%d %d\n", ($1+$3)/2, ($2+$4)/2 if /text="Install"[^>]*bounds="\[(\d+),(\d+)\]\[(\d+),(\d+)\]"/' storage/shared/Downloads/tmp/view.xml)
 echo "[$(date +%FT%T)] - X,Y to tap $coords"
 echo "[$(date +%FT%T)] - Installing $package"
 
